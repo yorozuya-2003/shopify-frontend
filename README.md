@@ -1,1 +1,1 @@
-# shopify-dummy-frontend
+# Shopify Dummy Frontend
