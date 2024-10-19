@@ -1,24 +1,38 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const [searchParams] = useSearchParams();
   const [shop, setShop] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const shopParam = searchParams.get("shop");
-    if (shopParam) {
-      setShop(shopParam);
+    const shopId = localStorage.getItem("shopId");
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (shopId) {
+      setShop(shopId);
     }
 
-    const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
-  }, [searchParams]);
+
+    setIsLoading(false);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("shopId");
+    setIsAuthenticated(false);
+    window.location.href = "/";
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -33,6 +47,7 @@ const Dashboard = () => {
         <p>Loading shop details...</p>
       )}
       <p>This is a dummy dashboard. You can build out your app here.</p>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
