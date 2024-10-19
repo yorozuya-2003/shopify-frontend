@@ -1,12 +1,12 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { backendUrl } from "./assets/Config";
+import { useOnMountUnsafe } from "./useOnMountUnsafe";
 
 const ShopifyCallback = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useOnMountUnsafe(() => {
     const handleCallback = async () => {
       const params = new URLSearchParams(window.location.search);
       const shop = params.get("shop");

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { backendUrl } from "./assets/Config";
-import Cookies from 'js-cookie';
 
 const ShopifyLogin = () => {
   const [shop, setShop] = useState("");
@@ -13,8 +12,7 @@ const ShopifyLogin = () => {
       const response = await axios.get(`${backendUrl}/api/login?shop=${shop}`, {
         headers: { "ngrok-skip-browser-warning": "69420" },
       });
-      const { url, shopify_oauth_state_param } = response.data;
-      Cookies.set('shopify_oauth_state_param', shopify_oauth_state_param, { expires: 1 / 24 });
+      const { url } = response.data;
       window.location.href = url;
     } catch (error) {
       setError(
