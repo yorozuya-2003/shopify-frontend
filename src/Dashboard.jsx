@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Navigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const [shop, setShop] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const shopParam = searchParams.get("shop");
     if (shopParam) {
       setShop(shopParam);
     }
+
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
   }, [searchParams]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div>

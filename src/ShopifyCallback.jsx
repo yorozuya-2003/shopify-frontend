@@ -12,21 +12,35 @@ const ShopifyCallback = () => {
       const shop = params.get("shop");
       const code = params.get("code");
       const state = params.get("state");
+      const hmac = params.get("hmac");
+      const timestamp = params.get("timestamp");
+      const host = params.get("host");
 
-      if (!shop || !code || !state) {
-        console.error("Missing shop, code, or state");
+      if (!shop || !code || !state || !hmac || !timestamp || !host) {
+        console.error("Missing required parameters");
         return;
       }
 
       try {
         const response = await axios.get(
-          `${backendUrl}/api/shopify-callback?shop=${shop}&code=${code}&state=${state}`,
-          {
-            headers: { "ngrok-skip-browser-warning": "69420" },
+          `${backendUrl}/api/shopify-callback`, {
+            withCredentials: true,
+            params: {
+              shop: shop,
+              code: code,
+              state: state,
+              hmac: hmac,
+              timestamp: timestamp,
+              host: host
+            },
+            headers: { "ngrok-skip-browser-warning": "69420" }
           }
         );
 
+
         if (response.data.success) {
+          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("shopId", shop);
           navigate(`/dashboard?shop=${shop}`);
         } else {
           console.error("Error in callback:", response.data.error);

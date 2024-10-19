@@ -7,19 +7,14 @@ import "./index.css";
 
 import {
   createBrowserRouter,
-  createRoutesFromElements,
-  Route,
   RouterProvider,
 } from "react-router-dom";
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<ShopifyLogin />}>
-      <Route path="/shopify-callback" element={<ShopifyCallback />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-    </Route>
-  )
-);
+const router = createBrowserRouter([
+  { path: "/", element: <ShopifyLogin /> },
+  { path: "/shopify-callback", element: <ShopifyCallback /> },
+  { path: "/dashboard", element: <Dashboard /> },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

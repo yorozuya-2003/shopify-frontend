@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { backendUrl } from "./assets/Config";
+import Cookies from 'js-cookie';
 
 const ShopifyLogin = () => {
   const [shop, setShop] = useState("");
@@ -12,11 +13,9 @@ const ShopifyLogin = () => {
       const response = await axios.get(`${backendUrl}/api/login?shop=${shop}`, {
         headers: { "ngrok-skip-browser-warning": "69420" },
       });
-      console.log(response.data);
-      if (response.data.url) {
-        console.log(response.data.url);
-        window.location.href = response.data.url;
-      }
+      const { url, shopify_oauth_state_param } = response.data;
+      Cookies.set('shopify_oauth_state_param', shopify_oauth_state_param, { expires: 1 / 24 });
+      window.location.href = url;
     } catch (error) {
       setError(
         error.response ? error.response.data.error : "An error occurred"
