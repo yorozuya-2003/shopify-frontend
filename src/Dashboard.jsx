@@ -8,7 +8,9 @@ const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [loadingOrders, setLoadingOrders] = useState(false);
 
   useEffect(() => {
     const shopId = localStorage.getItem("shopId");
@@ -27,6 +29,7 @@ const Dashboard = () => {
     setIsLoading(false);
   }, []);
 
+
   const fetchProducts = async (shopId, accessToken) => {
     setLoadingProducts(true);
     try {
@@ -44,11 +47,39 @@ const Dashboard = () => {
     }
   };
 
+
+  const fetchOrders = async (shopId, accessToken) => {
+    setLoadingOrders(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/orders?shopId=${shopId}`, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420",
+          'X-Shopify-Access-Token': accessToken,
+        },
+      });
+      setOrders(response.data.orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
   const handleLoadProducts = () => {
     const shopId = localStorage.getItem("shopId");
     const accessToken = localStorage.getItem("accessToken");
     if (shopId && accessToken) {
       fetchProducts(shopId, accessToken);
+    } else {
+      console.error("Shop ID or Access Token not found.");
+    }
+  };
+
+  const handleLoadOrders = () => {
+    const shopId = localStorage.getItem("shopId");
+    const accessToken = localStorage.getItem("accessToken");
+    if (shopId && accessToken) {
+      fetchOrders(shopId, accessToken);
     } else {
       console.error("Shop ID or Access Token not found.");
     }
@@ -110,6 +141,40 @@ const Dashboard = () => {
         </table>
       ) : (
         <p>No products found.</p>
+      )}
+
+      <h2>Order List</h2>
+      <button onClick={handleLoadOrders} disabled={loadingOrders}>
+        {loadingOrders ? "Loading Orders..." : "Load Orders"}
+      </button>
+
+      {orders.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Order ID</th>
+              <th>Subtotal Price</th>
+              <th>Currency</th>
+              <th>Created At</th>
+              <th>Contact Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>{order.order_id}</td>
+                <td>{order.current_subtotal_price}</td>
+                <td>{order.currency}</td>
+                <td>{new Date(order.created_at).toLocaleString()}</td>
+                <td>{order.contact_email || "N/A"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No orders found.</p>
       )}
     </div>
   );
