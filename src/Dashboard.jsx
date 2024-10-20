@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { backendUrl } from "./assets/Config";
 import axios from "axios";
 
 const Dashboard = () => {
@@ -29,7 +30,7 @@ const Dashboard = () => {
   const fetchProducts = async (shopId, accessToken) => {
     setLoadingProducts(true);
     try {
-      const response = await axios.get(`https://79bd-220-158-144-59.ngrok-free.app/api/products?shopId=${shopId}`, {
+      const response = await axios.get(`${backendUrl}/api/products?shopId=${shopId}`, {
         headers: {
           "ngrok-skip-browser-warning": "69420",
           'X-Shopify-Access-Token': accessToken,
