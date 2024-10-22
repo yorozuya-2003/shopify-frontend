@@ -157,7 +157,6 @@ const Dashboard = () => {
               <th>Subtotal Price</th>
               <th>Currency</th>
               <th>Created At</th>
-              <th>Contact Email</th>
             </tr>
           </thead>
           <tbody>
@@ -168,7 +167,6 @@ const Dashboard = () => {
                 <td>{order.current_subtotal_price}</td>
                 <td>{order.currency}</td>
                 <td>{new Date(order.created_at).toLocaleString()}</td>
-                <td>{order.contact_email || "N/A"}</td>
               </tr>
             ))}
           </tbody>
