@@ -9,7 +9,7 @@ const ShopifyLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${backendUrl}/api/login?shop=${shop}`, {
+      const response = await axios.get(`${backendUrl}/shopify/api/login?shop=${shop}`, {
         headers: { "ngrok-skip-browser-warning": "69420" },
       });
       const { url } = response.data;

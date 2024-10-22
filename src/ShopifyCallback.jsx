@@ -23,7 +23,7 @@ const ShopifyCallback = () => {
 
       try {
         const response = await axios.get(
-          `${backendUrl}/api/shopify-callback`, {
+          `${backendUrl}/shopify/api/shopify-callback`, {
             withCredentials: true,
             params: {
               shop: shop,
