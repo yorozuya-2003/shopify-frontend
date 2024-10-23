@@ -1,1 +1,1 @@
-# Shopify Dummy Frontend
+# Shopify Application
