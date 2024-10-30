@@ -9,10 +9,12 @@ const ShopifyLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${backendUrl}/shopify/api/login?shop=${shop}`, {
+      const response = await axios.get(`${backendUrl}/v1/shopify/api/login?shop=${shop}`, {
         headers: { "ngrok-skip-browser-warning": "69420" },
       });
-      const { url } = response.data;
+      const { url, shopify_oauth_state_param } = response.data;
+      localStorage.setItem('shopify_oauth_state_param', shopify_oauth_state_param);
+
       window.location.href = url;
     } catch (error) {
       setError(

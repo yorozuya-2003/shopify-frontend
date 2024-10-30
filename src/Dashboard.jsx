@@ -33,7 +33,7 @@ const Dashboard = () => {
   const fetchProducts = async (shopId, accessToken) => {
     setLoadingProducts(true);
     try {
-      const response = await axios.get(`${backendUrl}/shopify/api/products?shopId=${shopId}`, {
+      const response = await axios.get(`${backendUrl}/v1/shopify/api/products?shopId=${shopId}`, {
         headers: {
           "ngrok-skip-browser-warning": "69420",
           'X-Shopify-Access-Token': accessToken,
@@ -51,7 +51,7 @@ const Dashboard = () => {
   const fetchOrders = async (shopId, accessToken) => {
     setLoadingOrders(true);
     try {
-      const response = await axios.get(`${backendUrl}/shopify/api/orders?shopId=${shopId}`, {
+      const response = await axios.get(`${backendUrl}/v1/shopify/api/orders?shopId=${shopId}`, {
         headers: {
           "ngrok-skip-browser-warning": "69420",
           'X-Shopify-Access-Token': accessToken,
